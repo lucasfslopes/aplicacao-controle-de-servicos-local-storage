@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Serviços</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Controle de Serviços</h1>
+
+        <form id="formServico">
+            <input
+                type="text"
+                id="nomeServico"
+                placeholder="Nome do Serviço"
+                required
+            >
+
+            <input
+                type="number"
+                id="valorServico"
+                placeholder="Valor do Serviço"
+                step="0.01"
+                min="0"
+                required
+            >
+
+            <input
+                type="number"
+                id="comissaoServico"
+                placeholder="Comissão"
+                step="0.01"
+                min="0"
+                required
+            >
+
+            <input
+                type="text"
+                id="obsServico"
+                placeholder="Obs do Serviço"
+            >
+
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <div class="resumo">
+            <div>
+                <strong>Total Faturado:</strong>
+                <span id="totalFaturado">R$ 0,00</span>
+            </div>
+
+            <div>
+                <strong>Total Comissão:</strong>
+                <span id="totalComissao">R$ 0,00</span>
+            </div>
+
+            <div>
+            <button class="btn-excluir" onclick="limparLista()">Limpar tudo</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Valor</th>
+                    <th>Comissão</th>
+                    <th>Obs.</th>
+                    <th>Data/Hora</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody id="listaServicos"></tbody>
+        </table>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
