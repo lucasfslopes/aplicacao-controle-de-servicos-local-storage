@@ -1,3 +1,5 @@
+let temporizadorDebounce;
+
 const form = document.getElementById("formServico");
 const listaServicos = document.getElementById("listaServicos");
 
@@ -42,8 +44,10 @@ function atualizarTabela() {
 
     servicos.forEach((servico, index) => {
 
-        somaFaturamento += Number(servico.valor);
-        somaComissao += Number(servico.comissao);
+        if(!servico.checkboxPago){
+            somaFaturamento += Number(servico.valor);
+            somaComissao += Number(servico.comissao);
+        }
 
         const tr = document.createElement("tr");
 
@@ -54,7 +58,14 @@ function atualizarTabela() {
 
             <td class="textValores">R$ ${servico.comissao}</td>
 
-            <td><textarea>${servico.obs}</textarea></td>
+            <td><input class="inputbox" type="checkbox" id="checkbox" name="newsletter" ${servico.checkboxPago ? 'checked' : ''} onchange="editarCheckbox(${index}, this.checked)"></td>
+
+            <td>
+                <textarea
+                    class="input-tabela"
+                    oninput="editarObs(${index}, this.value)"
+                >${servico.obs}</textarea>
+            </td>
 
             <td>${servico.dataHora}</td>
 
@@ -92,6 +103,27 @@ function editarComissao(index, novaComissao) {
     atualizarTabela();
 }
 
+function editarCheckbox(index, novoCheckbox) {
+
+    servicos[index].checkboxPago = novoCheckbox;
+
+    atualizarTabela();
+}
+
+function editarObs(index, novaObs) {
+
+    clearTimeout(temporizadorDebounce);
+
+    temporizadorDebounce = setTimeout(() => {
+        
+        servicos[index].obs = novaObs || "";
+
+        atualizarTabela();
+
+    }, 1000); 
+
+}
+
 function excluirServico(index) {
 
     if (!confirm("Deseja excluir este registro?")) {
@@ -113,6 +145,8 @@ form.addEventListener("submit", (e) => {
 
     const comissao = parseFloat(comissaoServico.value);
 
+    const checkboxPago = true;
+
     const obs = document.getElementById("obsServico").value.trim();
 
     const agora = new Date();
@@ -121,6 +155,7 @@ form.addEventListener("submit", (e) => {
         nome,
         valor,
         comissao,
+        checkboxPago,
         obs,
         dataHora: agora.toLocaleString("pt-BR")
     });
